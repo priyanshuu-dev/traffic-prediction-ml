@@ -1,45 +1,107 @@
-# 🚦 Traffic Prediction System
+# Traffic Prediction System
 
-A Machine Learning project that predicts traffic levels using weather and time data.
+A web-based machine learning project that predicts traffic congestion levels using weather conditions, road conditions, traffic signal delays, and time-based traffic factors.
 
-## 🛠 Tech Stack
+The system combines machine learning with a responsive web interface to provide smart traffic predictions for different cities.
 
+---
+
+## Features
+
+- Traffic congestion prediction
+- Web-based user interface
+- Machine learning based analysis
+- Multiple city support
+- Weather condition analysis
+- Road condition analysis
+- Real-time user input prediction
+- Responsive frontend design
+- Smart traffic simulation
+
+---
+
+## Technologies Used
+
+### Frontend
+- HTML
+- CSS
+- JavaScript
+
+### Backend
 - Python
+- Flask
+
+### Machine Learning
 - Pandas
 - Scikit-learn
 - XGBoost
 
-## 📂 Project Structure
+### Other Tools
+- Git & GitHub
 
-```text
-traffic-prediction-ml/
-│
-├── model/
-├── website/
-├── requirements.txt
-└── README.md
-```
+---
 
-## ⚡ Features
+## Dataset
 
-- Traffic prediction using ML
-- Weather based analysis
-- XGBoost model
-- Future web integration
+The project uses a synthetic traffic dataset generated for training and testing purposes.
 
-## 🚀 Run Project
+Cities included in the dataset:
 
-```bash
-pip install -r requirements.txt
-python model/traffic_prediction.py
-```
+- Jaipur
+- Samastipur
+- Muzaffarpur
+- Patna
+- Kolkata
 
-## 🌐 Future Plans
+---
 
-- Web dashboard
-- Real-time prediction
-- Interactive UI
+## Input Parameters
 
-## 👨‍💻 Author
+- City
+- Hour
+- Day
+- Temperature
+- Rain Amount
+- Cloud Percentage
+- Weather Type
+- Holiday Status
+- Road Condition
+- Traffic Signal Delay
+
+---
+
+## Traffic Levels
+
+The system predicts:
+
+- Low Traffic
+- Medium Traffic
+- High Traffic
+
+---
+
+## Machine Learning Model
+
+The project uses the XGBoost Classifier algorithm for traffic prediction.
+
+---
+
+## Future Improvements
+
+- Live traffic data integration
+- Google Maps integration
+- Real-time weather API support
+- Deep learning based prediction
+- Deployment on cloud platforms
+
+---
+
+## Project Objective
+
+The objective of this project is to analyze traffic-related conditions and predict traffic congestion levels using machine learning techniques through a web-based platform.
+
+---
+
+## Author
 
 Priyanshu
