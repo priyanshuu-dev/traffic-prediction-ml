@@ -6,58 +6,61 @@ from xgboost import XGBClassifier
 import pickle
 
 
-df = pd.read_csv("Metro_Interstate_Traffic_Volume.csv")
-
-
-df["date_time"] = pd.to_datetime(df["date_time"])
-
-
-df["hour"] = df["date_time"].dt.hour
-df["day"] = df["date_time"].dt.dayofweek
-
-
-def traffic_level(volume):
-
-    if volume < 1500:
-        return 0
-
-    elif volume < 4000:
-        return 1
-
-    else:
-        return 2
-
-
-df["traffic_level"] = df["traffic_volume"].apply(
-    traffic_level
-)
+df = pd.read_csv("traffic_prediction_dataset.csv")
 
 
 label_encoder_weather = LabelEncoder()
+label_encoder_city = LabelEncoder()
+label_encoder_road = LabelEncoder()
+label_encoder_target = LabelEncoder()
 
 
 df["weather_main"] = label_encoder_weather.fit_transform(
     df["weather_main"]
 )
 
+df["city"] = label_encoder_city.fit_transform(
+    df["city"]
+)
 
-df["holiday"] = df["holiday"].apply(
-    lambda x: 0 if x == "None" else 1
+df["road_condition"] = label_encoder_road.fit_transform(
+    df["road_condition"]
+)
+
+df["congestion_level"] = label_encoder_target.fit_transform(
+    df["congestion_level"]
 )
 
 
+days = {
+    "Monday": 0,
+    "Tuesday": 1,
+    "Wednesday": 2,
+    "Thursday": 3,
+    "Friday": 4,
+    "Saturday": 5,
+    "Sunday": 6
+}
+
+df["day"] = df["day"].map(days)
+
+
 X = df[[
+    "city",
     "hour",
     "day",
+    "is_weekend",
     "temp",
     "rain_1h",
     "clouds_all",
     "weather_main",
-    "holiday"
+    "holiday",
+    "road_condition",
+    "traffic_signal_delay"
 ]]
 
 
-y = df["traffic_level"]
+y = df["congestion_level"]
 
 
 X_train, X_test, y_train, y_test = train_test_split(
@@ -69,9 +72,9 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 
 model = XGBClassifier(
-    n_estimators=200,
-    learning_rate=0.05,
-    max_depth=8,
+    n_estimators=100,
+    learning_rate=0.1,
+    max_depth=5,
     random_state=42
 )
 
@@ -98,16 +101,40 @@ print("\nModel Saved Successfully!")
 print("\n===== TRAFFIC PREDICTION =====")
 
 
-hour = int(input("Enter Hour (0-23): "))
+print("\nAvailable Cities:")
+
+for city in label_encoder_city.classes_:
+    print(city)
+
+
+city = input(
+    "\nEnter City: "
+).strip().title()
+
+
+while city not in label_encoder_city.classes_:
+
+    print("\nInvalid City!")
+
+    city = input(
+        "Enter City Again: "
+    ).strip().title()
+
+
+hour = int(input("\nEnter Hour (0-23): "))
 
 day = int(input("Enter Day (0=Monday, 6=Sunday): "))
 
 
-temp_celsius = float(
+if day >= 5:
+    is_weekend = 1
+else:
+    is_weekend = 0
+
+
+temp = float(
     input("Enter Temperature in Celsius: ")
 )
-
-temp = temp_celsius + 273.15
 
 
 rain = float(input("Enter Rain Amount: "))
@@ -122,7 +149,7 @@ for option in label_encoder_weather.classes_:
 
 
 weather = input(
-    "Enter Weather Type: "
+    "\nEnter Weather Type: "
 ).strip().title()
 
 
@@ -135,44 +162,84 @@ while weather not in label_encoder_weather.classes_:
     ).strip().title()
 
 
-holiday_input = input(
-    "Is it Holiday? (yes/no): "
-).strip().lower()
+holiday = int(
+    input("Holiday? (0 = No, 1 = Yes): ")
+)
 
 
-if holiday_input == "yes":
-    holiday = 1
-else:
-    holiday = 0
+print("\nRoad Conditions:")
 
+for option in label_encoder_road.classes_:
+    print(option)
+
+
+road = input(
+    "\nEnter Road Condition: "
+).strip().title()
+
+
+while road not in label_encoder_road.classes_:
+
+    print("\nInvalid Road Condition!")
+
+    road = input(
+        "Enter Road Condition Again: "
+    ).strip().title()
+
+
+traffic_signal_delay = int(
+    input("Enter Traffic Signal Delay: ")
+)
+
+
+city_encoded = label_encoder_city.transform(
+    [city]
+)[0]
 
 weather_encoded = label_encoder_weather.transform(
     [weather]
 )[0]
 
+road_encoded = label_encoder_road.transform(
+    [road]
+)[0]
+
 
 sample = pd.DataFrame([{
+    "city": city_encoded,
     "hour": hour,
     "day": day,
+    "is_weekend": is_weekend,
     "temp": temp,
     "rain_1h": rain,
     "clouds_all": clouds,
     "weather_main": weather_encoded,
-    "holiday": holiday
+    "holiday": holiday,
+    "road_condition": road_encoded,
+    "traffic_signal_delay": traffic_signal_delay
 }])
 
 
 prediction = model.predict(sample)[0]
 
 
-if prediction == 0:
-    level = "Low"
+level = label_encoder_target.inverse_transform(
+    [prediction]
+)[0]
 
-elif prediction == 1:
-    level = "Medium"
 
-else:
-    level = "High"
+print("\nUSER INPUT DATA")
+
+print("City:", city)
+print("Hour:", hour)
+print("Day:", day)
+print("Temperature:", temp)
+print("Rain Amount:", rain)
+print("Cloud Percentage:", clouds)
+print("Weather:", weather)
+print("Holiday:", holiday)
+print("Road Condition:", road)
+print("Traffic Signal Delay:", traffic_signal_delay)
 
 
 print("\nPredicted Traffic Level:", level)
