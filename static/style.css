@@ -1285,11 +1285,42 @@ body{
         flex-direction: column;
     }
 
-    #slidebar{
-        width: calc(100% - 40px);
-        height: auto;
-    }
+   #slidebar{
+    width: 100%;
 
+    height: auto;
+
+    margin: 0;
+
+    border-radius: 0;
+
+    padding: 12px;
+}
+.nav-item{
+    font-size: 14px;
+
+    padding: 8px 10px;
+}
+
+#side-card{
+    display: none;
+}
+
+.quick-stats{
+    grid-template-columns: 1fr;
+}
+
+.double-input{
+    grid-template-columns: 1fr;
+}
+
+#prediction-form{
+    grid-template-columns: 1fr;
+}
+
+#predict-btn{
+    grid-column: span 1;
+}
     .top_cards{
         grid-template-columns: 1fr;
         gap: 14px;
