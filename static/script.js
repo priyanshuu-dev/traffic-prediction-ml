@@ -8,7 +8,7 @@ function updateDateTime(){
 
     const now = new Date();
 
-    // TIME
+    
 
     const time =
         now.toLocaleTimeString(
@@ -19,7 +19,7 @@ function updateDateTime(){
             }
         );
 
-    // DATE
+    
 
     const date =
         now.toLocaleDateString(
