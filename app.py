@@ -1,7 +1,9 @@
-from flask import Flask, request, jsonify
+
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import pickle
 import pandas as pd
+
 
 app = Flask(__name__)
 CORS(app)
@@ -16,6 +18,9 @@ city_encoder = saved_data["city_encoder"]
 weather_encoder = saved_data["weather_encoder"]
 road_encoder = saved_data["road_encoder"]
 target_encoder = saved_data["target_encoder"]
+@app.route("/")
+def home():
+    return render_template("index.html")
 
 
 @app.route("/predict", methods=["POST"])
