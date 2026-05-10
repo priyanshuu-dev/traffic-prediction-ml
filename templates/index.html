@@ -9,7 +9,7 @@
 
     <title>Traffic Prediction</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <link
         href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
@@ -114,7 +114,7 @@
 
             <div id="side-card">
 
-                <img src="image.png" alt="">
+                <img src="{{ url_for('static', filename='image.png') }}" alt="">
 
                 <h4>Smart Traffic AI</h4>
 
@@ -533,7 +533,7 @@
 
     </div>
 
-    <script src="script.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
 
