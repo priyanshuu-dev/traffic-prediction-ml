@@ -1270,6 +1270,15 @@ body{
     grid-template-columns: 1fr 1fr;
     gap: 14px;
 }
+#creator-tag{
+    margin-left: auto;
+
+    font-size: 11px;
+
+    color: #8B7CFF;
+
+    letter-spacing: 0.5px;
+}
 @media (max-width: 1100px){
 
     #main{
